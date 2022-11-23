@@ -1,5 +1,4 @@
 <?php
-include_once "acao.php";
 
 ?>
 <!DOCTYPE html>
@@ -23,13 +22,13 @@ include_once "acao.php";
     <nav>
         <!-- menu -->
         <ul class="menu">
-            <li id="cadastrar" class="itemenu"><a href="index.php">Cadastrar</a></li>
+            <li id="cadastrar" class="itemenu"><a href="cadastrar.php">Cadastrar</a></li>
         </ul>
     </nav>
     <form action="POST" id="pesquisa">
         <div class="col">
-            <input type="text" class="form-control" placeholder="pesquisa" id="busca">
-            <input class="btn btn-cancel" type="submit" name="pesquisa" value="pesquisa">
+            <input type="text" class="form-control" placeholder="Pesquisar..." id="busca">
+            <input class="btn btn-cancel" type="submit" name="pesquisa" value="Pesquisar">
         </div>
     </form>
     <table class="table table-striped table-hover">
@@ -43,7 +42,7 @@ include_once "acao.php";
 
                 if ($busca != "") {
                     $busca = '%' . $busca . '%';
-                    $query .= ' WHERE nome like :busca';
+                    $query .= ' WHERE nomeCompleto like :busca';
                 }
 
                 $stmt = $conexao->prepare($query);
@@ -53,18 +52,18 @@ include_once "acao.php";
                 }
 
                 $stmt->execute();
-                $usuarios = $stmt->fetchAll();
+                $contatos = $stmt->fetchAll();
 
                 echo "<tr><th>Id</th><th>Nome</th><th>Email</th><th>Idade</th><th>Editar</th><th>Excluir</th></tr>";
-                foreach ($usuarios as $usuario) {
-                    $editar = "<a href=cadastrar.php?acao=editar&id=" . $usuario["idcontato"] . ">Alt</a>";
-                    $excluir = "<a href='acaobd.php?acao=excluir&idcontato=" . $usuario['idcontato'] . "'>Exc</a>";
+                foreach ($contatos as $contato) {
+                    $editar = "<a href=cadastrar.php?acao=editar&id=" . $contato["id"] . ">Alterar</a>";
+                    $excluir = "<a href='acaobd.php?acao=excluir&id=" . $contato['id'] . "'>Excluir</a>";
                     ;
-                    echo "<tr><td>" . $usuario["idcontato"] . "</td>" . "<td>" . $usuario["nome"] . "</td>" . "<td>" . $usuario["email"] . "</td>" . "<td>" . $usuario["idade"] . "</td><td>$editar</td>" . "<td>$excluir</td>" . "</tr>";
+                    echo "<tr><td>" . $contato["id"] . "</td>" . "<td>" . $contato["nomeCompleto"] . "</td>" . "<td>" . $contato["email"] . "</td>" . "<td>" . $contato["idade"] . "</td><td>$editar</td>" . "<td>$excluir</td>" . "</tr>";
                 }
 
-            } catch (PDOExeptio $e) {
-                print("Erro ao conectar com o banco de dados . . . <bre>" . $e->getMenssage());
+            } catch (PDOException $e) {
+                print("Erro ao conectar com o banco de dados . . . <bre>" . $e->getMessage());
                 die();
             }
             ?>

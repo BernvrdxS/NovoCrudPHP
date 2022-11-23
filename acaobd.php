@@ -2,24 +2,26 @@
 
 include_once "config.php";
 
-$nome = isset($_POST["nome"])?$_POST["nome"]:"";
+$nome = isset($_POST["nomeCompleto"])?$_POST["nomeCompleto"]:"";
 $email = isset($_POST["email"])?$_POST["email"]:"";
 $idade = isset($_POST["idade"])?$_POST["idade"]:"";
-$dataN = isset($_POST["nascimento"])?$_POST["nascimento"]:"";
+$dataN = isset($_POST["dataNascimento"])?$_POST["dataNascimento"]:"";
 $parente = isset($_POST["parente"])?$_POST["parente"]:"";
-$localC = isset($_POST["local"])?$_POST["local"]:"";
+$origem = isset($_POST["origem"])?$_POST["origem"]:"";
 $passatempo = isset($_POST["passatempo"])?$_POST["passatempo"]:"";
 $cidade = isset($_POST["cidade"])?$_POST["cidade"]:"";
 $id = isset($_POST["id"])?$_POST["id"]:0;
+$telefone = isset($_POST["telefone"])?$_POST["telefone"]:"";
+
 
 $acao = isset($_GET["acao"])?$_GET["acao"]:"";
 
 if ($acao == "excluir"){
     try{
-        $id = isset($_GET["idcontato"])?$_GET["idcontato"]:0;
+        $id = isset($_GET["id"])?$_GET["id"]:0;
 
         $conexao = new PDO(MYSQL_DSN,DB_USER,DB_PASSWORD);
-        $query = "DELETE FROM contato WHERE idcontato = :id";
+        $query = "DELETE FROM contato WHERE id = :id";
         $stmt = $conexao->prepare($query);
         $stmt->bindValue(":id",$id);
 
@@ -40,9 +42,9 @@ if($nome != "" && $email != "" && $idade != ""){
         $conexao = new PDO(MYSQL_DSN,DB_USER,DB_PASSWORD);
 
         if($id > 0){
-            $query = "UPDATE contato SET nome = :nome, email = :email, idade = :idade , dataN = :dataN, parente = :parente, localC = :localC, cidade = :cidade, passatempo = :passatempo WHERE idcontato = :id";
+            $query = "UPDATE contato SET nomeCompleto = :nome, email = :email, idade = :idade , dataNascimento = :dataN, parente = :parente, origem = :origem, cidade = :cidade, passatempo = :passatempo, telefone = :telefone WHERE id = :id";
         }else{
-            $query = "INSERT INTO contato (nome, email, idade, dataN, parente, localC, cidade, passatempo) VALUES(:nome, :email, :idade, :dataN, :parente, :localC, :cidade, :passatempo)";
+            $query = "INSERT INTO contato (nomeCompleto, email, idade, dataNascimento, parente, origem, cidade, passatempo, telefone) VALUES(:nome, :email, :idade, :dataN, :parente, :origem, :cidade, :passatempo, :telefone)";
         }
 
         $stmt = $conexao->prepare($query);
@@ -52,9 +54,10 @@ if($nome != "" && $email != "" && $idade != ""){
         $stmt->bindValue(":idade",$idade);
         $stmt->bindValue(":dataN",$dataN);
         $stmt->bindValue(":parente",$parente);
-        $stmt->bindValue(":localC",$localC);
+        $stmt->bindValue(":origem",$origem);
         $stmt->bindValue(":cidade",$cidade);
         $stmt->bindValue(":passatempo",$passatempo);
+        $stmt->bindValue(":telefone", $telefone);
         if($id > 0){
             $stmt->bindValue(":id",$id);
         }
