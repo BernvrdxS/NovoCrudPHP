@@ -1,6 +1,6 @@
 <?php
 
-include_once "config.php";
+include_once "config/config.php";
 
 $nome = isset($_POST["nomeCompleto"])?$_POST["nomeCompleto"]:"";
 $email = isset($_POST["email"])?$_POST["email"]:"";

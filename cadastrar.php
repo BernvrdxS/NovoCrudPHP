@@ -7,7 +7,7 @@ $id = isset($_GET["id"]) ? $_GET["id"] : "";
 
 if ($acao == "editar") {
     try {
-        include_once "config.php";
+        include_once "config/config.php";
         $conexao = new PDO(MYSQL_DSN, DB_USER, DB_PASSWORD);
 
         $query = "SELECT * FROM contato WHERE id = :id";
